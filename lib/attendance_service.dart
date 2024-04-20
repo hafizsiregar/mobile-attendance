@@ -4,7 +4,6 @@ import 'package:mobile_attendance/attendance.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendanceService {
-  // Fungsi untuk menambahkan data kehadiran
   Future addAttendance(double latitude, double longitude) async {
     DateTime currentTime = DateTime.now();
     Attendance attendance = Attendance(
@@ -13,7 +12,6 @@ class AttendanceService {
       longitude: longitude,
     );
 
-    // Simpan data kehadiran ke penyimpanan lokal
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> attendanceList = prefs.getStringList('attendance') ?? [];
     attendanceList.add(jsonEncode({
@@ -24,7 +22,6 @@ class AttendanceService {
     await prefs.setStringList('attendance', attendanceList);
   }
 
-  // Fungsi untuk melakukan pengecekan kehadiran berdasarkan lokasi master
   Future checkAttendance(Position masterPosition) async {
     Position currentPosition = await Geolocator.getCurrentPosition();
     double distanceInMeters = Geolocator.distanceBetween(
@@ -38,7 +35,6 @@ class AttendanceService {
       throw Exception('You are too far from the master location.');
     }
 
-    // Jika lokasi sesuai, tambahkan data kehadiran
     await addAttendance(currentPosition.latitude, currentPosition.longitude);
   }
 }

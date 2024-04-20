@@ -19,12 +19,9 @@ class _AttendancePageState extends State<AttendancePage> {
 
   Future<void> _takeAttendance() async {
     if (!(await _checkLocationPermission())) {
-      // Jika izin lokasi belum diberikan, minta izin lokasi
       await _requestLocationPermission();
       return;
     }
-
-    // Lanjutkan untuk mengambil lokasi
     Position position;
     try {
       position = await _getCurrentLocation();
@@ -49,10 +46,8 @@ class _AttendancePageState extends State<AttendancePage> {
 
   Future<void> _requestLocationPermission() async {
     if (await Permission.location.request().isGranted) {
-      // Izin lokasi diberikan, lanjutkan dengan mengambil lokasi
       _takeAttendance();
     } else {
-      // Izin lokasi ditolak, tampilkan pesan kesalahan
       _showErrorDialog('Location permission denied');
     }
   }
